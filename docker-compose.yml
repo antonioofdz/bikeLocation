@@ -9,9 +9,9 @@ services:
       MYSQL_ROOT_PASSWORD: dev-root
       MYSQL_USER: dev-user
       MYSQL_PASSWORD: dev-password
-      MYSQL_DATABASE: ermakina
+      MYSQL_DATABASE: ProyectoFinalDra
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     ports:
-    - "5005:80"
+    - "5000:80"
