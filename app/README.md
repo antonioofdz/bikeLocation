@@ -1,5 +1,9 @@
-![alt text](filename.png "Description goes here")
+----
+**DB Diagram**
+----
 
+![alt text](./dbDiagram.png "Description goes here")
+----
 **Login User**
 ----
   Realiza el login y, en caso de ser satisfactorio, retorna el accessToken del usuario.
