@@ -10,7 +10,6 @@ import (
 	"github.com/antonioofdz/personalProjectDra/pkg/database"
 )
 
-
 // TRAER EL LISTADO DE BICICLETAS PARA PINTARLAS EN EL MAPA
 func getListBikes() ([] models.BikeFull, error) {
 	sqlListBikes := `SELECT b.id, b.model, bl.address, bl.lat, 
