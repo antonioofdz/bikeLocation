@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"errors"
 
 	_ "github.com/go-sql-driver/mysql"
 
@@ -47,4 +48,72 @@ func getUserUserByToken(token string) (*models.UserDB, error) {
 	}
 
 	return &userDB, nil
+}
+
+func signInUser(signInUser *models.SignInUserDB) error {
+	sqlCheckIfExistsUser := `SELECT count(*) from users_credentials where user = ?`
+	if !checkValidPassword(signInUser.Password) {
+		err := errors.New("INVALID PASSWORD")
+		return err
+	}
+
+	db, err := database.Open()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	var countUsers int
+	err = db.QueryRow(sqlCheckIfExistsUser, signInUser.Username).Scan(&countUsers)
+	if err != nil {
+		return err
+	}
+
+	if countUsers > 0 {
+		err = errors.New("USERNAME ALREADY EXISTS")
+		return err
+	}
+
+	return insertUser(signInUser)
+}
+
+func insertUser(signInUser *models.SignInUserDB) (error) {
+	db, err := database.Open()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	sqlInsertUser := `INSERT INTO users (name, surname, email, token) VALUES (?, ?, ?, UUID());`
+	stmt, err := db.Prepare(sqlInsertUser)
+    if err != nil {
+        err = errors.New("CANNOT PREPARE STATMENT")
+		return err
+	}
+	
+	data, err := stmt.Exec(signInUser.Username, signInUser.Surname, signInUser.Email);
+    if err != nil {
+        err = errors.New("CANNOT PREPARE STATMENT")
+		return err
+	}
+	signInUser.Id, err = data.LastInsertId()
+	if err != nil {
+		err = errors.New("ERROR GETTING LAST ID INSERT")
+		return err
+	}
+
+	sqlInsertUserCredentials := `INSERT INTO users_credentials (user, password, id_user) VALUES (?, ?, ?);`
+	stmt, err = db.Prepare(sqlInsertUserCredentials)
+    if err != nil {
+        err = errors.New("CANNOT PREPARE STATMENT INSERT USER CREDENTIALS")
+		return err
+	}
+	
+	data, err = stmt.Exec(signInUser.Username, signInUser.Password, signInUser.Id);
+    if err != nil {
+        err = errors.New("CANNOT PREPARE STATMENT INSERT USER CREDENTIALS")
+		return err
+    }
+
+	return nil
 }

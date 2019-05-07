@@ -1,50 +1,27 @@
 package handlers
 
 import (
-	"net/http"
 	"regexp"
-
-	_ "github.com/go-sql-driver/mysql"
-
-	"github.com/antonioofdz/personalProjectDra/pkg/database"
 )
 
-func CheckToken(next http.Handler) http.Handler {
-	checkValidGuidFn := func(uuid string) bool {
-		r := regexp.MustCompile("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
-		return r.MatchString(uuid)
-	}
-
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get("token")
-		existTokenBD, err := checkTokenBD(token)
-		if err != nil {
-			http.Error(w, "INVALID TOKEN", http.StatusUnauthorized)
-			return
-		}
-
-		if !checkValidGuidFn(token) || !existTokenBD {
-			http.Error(w, "INVALID TOKEN", http.StatusUnauthorized)
-			return
-		}
-
-		next.ServeHTTP(w, r)
-	})
+func checkValidGuidRegExpFn(uuid string) bool {
+	r := regexp.MustCompile("[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
+	return r.MatchString(uuid)
 }
 
-func checkTokenBD(token string) (bool, error) {
-	sqlCheckTokenBD := "SELECT count(*) from users WHERE token=?"
-	db, err := database.Open()
-	if err != nil {
-		return false, err
-	}
-	defer db.Close()
-
-	count := 0
-	err = db.QueryRow(sqlCheckTokenBD, token).Scan(&count)
-	if err != nil {
-		return false, err
-	}
-
-	return count>0, nil
+/*
+	Minimo 8 caracteres
+	Maximo 15
+	Al menos una letra mayúscula
+	Al menos una letra minucula
+	Al menos un dígito
+	No espacios en blanco
+	Al menos 1 caracter especial
+*/
+func checkValidPassword(s string) bool {
+    lower_cond := regexp.MustCompile(`[a-z]`)
+    upper_cond := regexp.MustCompile(`[A-Z]`)
+    digit_cond := regexp.MustCompile(`[0-9]`)
+    //whole_cond := regexp.MustCompile(`^[0-9a-zA-Z!@#$%^&*()]*$`)
+    return lower_cond.MatchString(s) && upper_cond.MatchString(s) && digit_cond.MatchString(s) && len(s) >= 8
 }

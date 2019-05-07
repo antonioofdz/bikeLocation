@@ -18,6 +18,11 @@ type UserDB struct {
 	Email   string
 }
 
+type SignInUserDB struct {
+	UserDBCredentials
+	UserDB
+}
+
 type UserBasic struct {
-	Id int
+	Id int64
 }

@@ -74,7 +74,7 @@
 ----
 **GET User**
 ----
-  Realiza el login y, en caso de ser satisfactorio, retorna el accessToken del usuario.
+  Obtiene los datos básicos de un usuario.
 
 * **URL**
 
