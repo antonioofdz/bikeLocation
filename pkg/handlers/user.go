@@ -23,7 +23,7 @@ func getUserCredentials(userCredentials *models.UserDBCredentials) (*models.User
 	var userDB models.UserDBToken
 	err = db.QueryRow(sqlGetUserCredentials, &userCredentials.Username, &userCredentials.Password).Scan(&userDB.Token)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 
 	return &userDB, nil
