@@ -1,29 +1,28 @@
 **Show User**
 ----
-  Returns json data about a single user.
+  Realiza el login y, en caso de ser satisfactorio, retorna el accessToken del usuario.
 
 * **URL**
 
-  /users/:id
+  /login
 
 * **Method:**
 
-  `GET`
+  `POST`
   
-*  **URL Params**
-
-   **Required:**
- 
-   `id=[integer]`
-
 * **Data Params**
 
-  None
-
+  Se pasará por el cuerpo de la petición un objeto del tipo:
+  ```javascript
+    {
+        "Username" : "example_user",
+        "Password" : "example_password"
+    }
+  ```
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:** `{ id : 12, name : "Michael Bloom" }`
+    **Content:** `{"Token":"a01bb83c-7f5g-5321-93e9-0242ac120003"}`
  
 * **Error Response:**
 
@@ -34,16 +33,3 @@
 
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:** `{ error : "You are unauthorized to make this request." }`
-
-* **Sample Call:**
-
-  ```javascript
-    $.ajax({
-      url: "/users/1",
-      dataType: "json",
-      type : "GET",
-      success : function(r) {
-        console.log(r);
-      }
-    });
-  ```

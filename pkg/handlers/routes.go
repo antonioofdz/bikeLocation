@@ -14,7 +14,7 @@ import (
 func LoadRoutes() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/user/login", loginUserController).Methods("POST")
+	router.HandleFunc("/login", loginUserController).Methods("POST")
 	router.Handle("/user", CheckToken(http.HandlerFunc(getUserByTokenController))).Methods("GET")
 	router.Handle("/bikes", CheckToken(http.HandlerFunc(getListBikesController))).Methods("GET")
 	router.Handle("/bikes/book", CheckToken(http.HandlerFunc(bookBikeController))).Methods("POST")
