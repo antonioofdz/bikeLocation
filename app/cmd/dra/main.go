@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/antonioofdz/personalProjectDra/pkg/handlers"
+	"github.com/antonioofdz/personalProjectDra/app/pkg/handlers"
 )
 
 func main() {
