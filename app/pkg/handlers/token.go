@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/antonioofdz/personalProjectDra/pkg/database"
+	"github.com/antonioofdz/personalProjectDra/app/pkg/database"
 )
 
 func CheckToken(next http.Handler) http.Handler {
@@ -46,5 +46,5 @@ func checkTokenBD(token string) (bool, error) {
 		return false, err
 	}
 
-	return count>0, nil
+	return count > 0, nil
 }

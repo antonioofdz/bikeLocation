@@ -1,13 +1,13 @@
 package handlers
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/antonioofdz/personalProjectDra/pkg/models"
-	"github.com/antonioofdz/personalProjectDra/pkg/database"
+	"github.com/antonioofdz/personalProjectDra/app/pkg/database"
+	"github.com/antonioofdz/personalProjectDra/app/pkg/models"
 )
 
 func getUserCredentials(userCredentials *models.UserDBCredentials) (*models.UserDBToken, error) {
@@ -32,7 +32,7 @@ func getUserCredentials(userCredentials *models.UserDBCredentials) (*models.User
 
 func getUserUserByToken(token string) (*models.UserDB, error) {
 	fmt.Println(token)
-	sqlGetUserCredentials :=    `SELECT users.id, users.name, 
+	sqlGetUserCredentials := `SELECT users.id, users.name, 
 									 users.surname, users.email, users.token 
 								FROM users WHERE token=?`
 	db, err := database.Open()
@@ -77,7 +77,7 @@ func signInUser(signInUser *models.SignInUserDB) error {
 	return insertUser(signInUser)
 }
 
-func insertUser(signInUser *models.SignInUserDB) (error) {
+func insertUser(signInUser *models.SignInUserDB) error {
 	db, err := database.Open()
 	if err != nil {
 		return err
@@ -86,14 +86,14 @@ func insertUser(signInUser *models.SignInUserDB) (error) {
 
 	sqlInsertUser := `INSERT INTO users (name, surname, email, token) VALUES (?, ?, ?, UUID());`
 	stmt, err := db.Prepare(sqlInsertUser)
-    if err != nil {
-        err = errors.New("CANNOT PREPARE STATMENT")
+	if err != nil {
+		err = errors.New("CANNOT PREPARE STATMENT")
 		return err
 	}
-	
-	data, err := stmt.Exec(signInUser.Username, signInUser.Surname, signInUser.Email);
-    if err != nil {
-        err = errors.New("CANNOT PREPARE STATMENT")
+
+	data, err := stmt.Exec(signInUser.Username, signInUser.Surname, signInUser.Email)
+	if err != nil {
+		err = errors.New("CANNOT PREPARE STATMENT")
 		return err
 	}
 	signInUser.Id, err = data.LastInsertId()
@@ -104,16 +104,16 @@ func insertUser(signInUser *models.SignInUserDB) (error) {
 
 	sqlInsertUserCredentials := `INSERT INTO users_credentials (user, password, id_user) VALUES (?, ?, ?);`
 	stmt, err = db.Prepare(sqlInsertUserCredentials)
-    if err != nil {
-        err = errors.New("CANNOT PREPARE STATMENT INSERT USER CREDENTIALS")
+	if err != nil {
+		err = errors.New("CANNOT PREPARE STATMENT INSERT USER CREDENTIALS")
 		return err
 	}
-	
-	data, err = stmt.Exec(signInUser.Username, signInUser.Password, signInUser.Id);
-    if err != nil {
-        err = errors.New("CANNOT PREPARE STATMENT INSERT USER CREDENTIALS")
+
+	data, err = stmt.Exec(signInUser.Username, signInUser.Password, signInUser.Id)
+	if err != nil {
+		err = errors.New("CANNOT PREPARE STATMENT INSERT USER CREDENTIALS")
 		return err
-    }
+	}
 
 	return nil
 }

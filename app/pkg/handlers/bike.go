@@ -6,12 +6,12 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/antonioofdz/personalProjectDra/pkg/models"
-	"github.com/antonioofdz/personalProjectDra/pkg/database"
+	"github.com/antonioofdz/personalProjectDra/app/pkg/database"
+	"github.com/antonioofdz/personalProjectDra/app/pkg/models"
 )
 
 // TRAER EL LISTADO DE BICICLETAS PARA PINTARLAS EN EL MAPA
-func getListBikes() ([] models.BikeFull, error) {
+func getListBikes() ([]models.BikeFull, error) {
 	sqlListBikes := `SELECT b.id, b.model, bl.address, bl.lat, 
 									bl.lon, ub.booked, ub.dateRent, ub.dateReturn 
 								FROM bike b 
@@ -24,7 +24,7 @@ func getListBikes() ([] models.BikeFull, error) {
 	}
 	defer db.Close()
 
-	var bikes [] models.BikeFull
+	var bikes []models.BikeFull
 	rows, err := db.Query(sqlListBikes)
 	if err != nil {
 		return nil, err
@@ -33,17 +33,17 @@ func getListBikes() ([] models.BikeFull, error) {
 
 	for rows.Next() {
 		var b models.BikeFull
-		if err := rows.Scan(&b.Id, &b.Model, &b.Address, &b.Lat, &b.Lon, &b.Booked, &b.DateRent, &b.DateReturn ); err != nil {
+		if err := rows.Scan(&b.Id, &b.Model, &b.Address, &b.Lat, &b.Lon, &b.Booked, &b.DateRent, &b.DateReturn); err != nil {
 			continue
 		}
 		bikes = append(bikes, b)
 	}
-	
+
 	return bikes, nil
 }
 
 // METODO PARA RESERVAR UNA BICICLETA
-func bookBike(bookBikeModel *models.BookBike) (error) {
+func bookBike(bookBikeModel *models.BookBike) error {
 	sqlBookBike := `INSERT INTO user_bike(booked, dateRent, dateReturn, id_user, id_bike) 
 						VALUES (true, NOW(), null, ?, ?); `
 
@@ -54,19 +54,19 @@ func bookBike(bookBikeModel *models.BookBike) (error) {
 	defer db.Close()
 
 	stmt, err := db.Prepare(sqlBookBike)
-    if err != nil {
-        log.Fatal("Cannot prepare DB statement", err)
+	if err != nil {
+		log.Fatal("Cannot prepare DB statement", err)
 	}
-	
-    if _, err := stmt.Exec(bookBikeModel.IdUser, bookBikeModel.IdBike); err != nil {
-        log.Fatal("Cannot run insert statement", err)
-    }
+
+	if _, err := stmt.Exec(bookBikeModel.IdUser, bookBikeModel.IdBike); err != nil {
+		log.Fatal("Cannot run insert statement", err)
+	}
 
 	return nil
 }
 
 // METODO PARA CANCELAR UNA RESERVA
-func endBookBike(bookBikeModel *models.BookBike) (error) {
+func endBookBike(bookBikeModel *models.BookBike) error {
 	sqlEndBookBike := `UPDATE user_bike SET booked = false, dateReturn=NOW() 
 							WHERE id_user=? and id_bike=?;`
 
@@ -77,13 +77,13 @@ func endBookBike(bookBikeModel *models.BookBike) (error) {
 	defer db.Close()
 
 	stmt, err := db.Prepare(sqlEndBookBike)
-    if err != nil {
-        log.Fatal("Cannot prepare DB statement", err)
+	if err != nil {
+		log.Fatal("Cannot prepare DB statement", err)
 	}
-	
-    if _, err := stmt.Exec(bookBikeModel.IdUser, bookBikeModel.IdBike); err != nil {
-        log.Fatal("Cannot run insert statement", err)
-    }
+
+	if _, err := stmt.Exec(bookBikeModel.IdUser, bookBikeModel.IdBike); err != nil {
+		log.Fatal("Cannot run insert statement", err)
+	}
 
 	return nil
 }

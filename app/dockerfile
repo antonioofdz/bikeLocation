@@ -1,7 +1,17 @@
+# Start from a Debian image with the latest version of Go installed
+# and a workspace (GOPATH) configured at /go.
 FROM golang:alpine
-RUN mkdir /app 
-ADD . /app/ 
-WORKDIR /app
-RUN apk update && apk add git && go mod download
-RUN go build -o ./cmd/dra/main.go
-CMD ["app/main"]
+
+# Copy the local package files to the container's workspace.
+ADD . /go/src/github.com/antonioofdz/personalProjectDra
+
+# Build the outyet command inside the container.
+# (You may fetch or manage dependencies here,
+# either manually or with a tool like "godep".)
+RUN go install github.com/antonioofdz/personalProjectDra
+
+# Run the outyet command by default when the container starts.
+ENTRYPOINT /go/bin/outyet
+
+# Document that the service listens on port 8080.
+EXPOSE 8080

@@ -8,7 +8,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 
-	"github.com/antonioofdz/personalProjectDra/pkg/models"
+	"github.com/antonioofdz/personalProjectDra/app/pkg/models"
 )
 
 func LoadRoutes() {
@@ -29,13 +29,13 @@ func loginUserController(w http.ResponseWriter, req *http.Request) {
 	var userDB *models.UserDBCredentials
 	if err := json.NewDecoder(req.Body).Decode(&userDB); err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-    	w.Write([]byte("Error Parsing BODY! [/user/login]"))
+		w.Write([]byte("Error Parsing BODY! [/user/login]"))
 	}
 
 	data, err := getUserCredentials(userDB)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-    	w.Write([]byte("Something bad happened! [/user/login]"))
+		w.Write([]byte("Something bad happened! [/user/login]"))
 	}
 	json.NewEncoder(w).Encode(data)
 }
@@ -45,13 +45,13 @@ func signInController(w http.ResponseWriter, req *http.Request) {
 	var signInUserDB *models.SignInUserDB
 	if err := json.NewDecoder(req.Body).Decode(&signInUserDB); err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-    	w.Write([]byte("Error Parsing BODY! [/signin]"))
+		w.Write([]byte("Error Parsing BODY! [/signin]"))
 	}
-	
+
 	err := signInUser(signInUserDB)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-    	w.Write([]byte("Something bad happened! [/signin] \n"+ err.Error()))
+		w.Write([]byte("Something bad happened! [/signin] \n" + err.Error()))
 	}
 	json.NewEncoder(w).Encode(http.StatusOK)
 }
@@ -61,7 +61,7 @@ func getUserByTokenController(w http.ResponseWriter, req *http.Request) {
 	data, err := getUserUserByToken(req.Header.Get("token"))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-    	w.Write([]byte("Something bad happened! [/user]"))
+		w.Write([]byte("Something bad happened! [/user]"))
 	}
 
 	json.NewEncoder(w).Encode(data)
@@ -72,7 +72,7 @@ func getListBikesController(w http.ResponseWriter, req *http.Request) {
 	data, err := getListBikes()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-    	w.Write([]byte("Something bad happened! [/bikes]"))
+		w.Write([]byte("Something bad happened! [/bikes]"))
 	}
 
 	json.NewEncoder(w).Encode(data)
@@ -84,12 +84,12 @@ func bookBikeController(w http.ResponseWriter, req *http.Request) {
 	err := json.NewDecoder(req.Body).Decode(&bookBikeModel)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-    	w.Write([]byte("Error Parsing BODY! [/user/login]"))
+		w.Write([]byte("Error Parsing BODY! [/user/login]"))
 	}
 
 	if err = bookBike(&bookBikeModel); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-    	w.Write([]byte("Something bad happened! [/bikes/book]"))
+		w.Write([]byte("Something bad happened! [/bikes/book]"))
 	}
 
 	json.NewEncoder(w).Encode(http.StatusOK)
@@ -101,12 +101,12 @@ func returnBikeController(w http.ResponseWriter, req *http.Request) {
 	err := json.NewDecoder(req.Body).Decode(&bookBikeModel)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-    	w.Write([]byte("Error Parsing BODY! [/user/login]"))
+		w.Write([]byte("Error Parsing BODY! [/user/login]"))
 	}
 
 	if err = endBookBike(&bookBikeModel); err != nil {
 		w.WriteHeader(http.StatusBadRequest)
-    	w.Write([]byte("Something bad happened! [/bikes/return]"))
+		w.Write([]byte("Something bad happened! [/bikes/return]"))
 	}
 
 	json.NewEncoder(w).Encode(http.StatusOK)
