@@ -1,5 +1,0 @@
-FROM golang:alpine
-COPY . ../
-
-RUN ls -a
-RUN go run /cmd/dra/main.go

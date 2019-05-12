@@ -1,8 +1,7 @@
 ----
 **DB Diagram**
 ----
-
-![alt text](./dbDiagram.png "Description goes here")
+![ScreenShot](dbDiagram.PNG)
 ----
 **Login User**
 ----
