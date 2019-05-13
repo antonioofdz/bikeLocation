@@ -7,7 +7,7 @@ import (
 )
 
 func Open() (*sql.DB, error) {
-	db, err := sql.Open("mysql", "dev-user:dev-password@db:3306/ProyectoFinalDra")
+	db, err := sql.Open("mysql", "root:dev-root@localhost:3306/ProyectoFinalDra")
 	if err != nil {
 		return db, err
 	}

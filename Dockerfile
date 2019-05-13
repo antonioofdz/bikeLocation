@@ -7,6 +7,8 @@ WORKDIR /app
 COPY . .
 
 RUN go mod download && \
-    go install cmd
+    go install ./cmd/dra
 
-CMD ["cmd/dra/main"]
+EXPOSE 5002:5002
+
+CMD ["dra"]

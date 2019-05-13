@@ -21,7 +21,7 @@ func LoadRoutes() {
 	router.Handle("/bikes/book", CheckToken(http.HandlerFunc(bookBikeController))).Methods("POST")
 	router.Handle("/bikes/return", CheckToken(http.HandlerFunc(returnBikeController))).Methods("POST")
 
-	log.Fatal(http.ListenAndServe(":5001", router))
+	log.Fatal(http.ListenAndServe(":5002", router))
 }
 
 // Controlador para logear a un usuario
