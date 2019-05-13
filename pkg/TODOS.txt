@@ -1,0 +1,6 @@
+1. Comprobar antes de hacer una reserva si esa bici está ya reservada.
+(DONE) 2. Registro de USUARIO
+3. Modificar listado de bicis para que traiga los datos correctos. ( MySQL row count)
+4. Revisar getuser por si meto en la url la variable
+5. Documentacion
+6. Encriptar la contraseña.
