@@ -5,9 +5,5 @@ import (
 )
 
 func main() {
-	/*if err := database.InitDB(); err != nil {
-		panic(err)
-	}*/
-
 	handlers.LoadRoutes()
 }

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -12,8 +13,10 @@ import (
 )
 
 func LoadRoutes() {
+	fmt.Println("Iniciando rutas..")
 	router := mux.NewRouter()
 
+	router.Handle("/initdb", CheckMasterToken(http.HandlerFunc(initDBController))).Methods("GET")
 	router.HandleFunc("/login", loginUserController).Methods("POST")
 	router.HandleFunc("/signin", signInController).Methods("POST")
 	router.Handle("/user", CheckToken(http.HandlerFunc(getUserByTokenController))).Methods("GET")
@@ -22,6 +25,16 @@ func LoadRoutes() {
 	router.Handle("/bikes/return", CheckToken(http.HandlerFunc(returnBikeController))).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":5002", router))
+}
+
+func initDBController(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("Error rutas.. initDBController")
+	if err := InitDBHandler(); err != nil {
+		fmt.Println("Error rutas.. ", err)
+
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("Error Parsing BODY! [/initDB]"))
+	}
 }
 
 // Controlador para logear a un usuario

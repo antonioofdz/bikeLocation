@@ -32,6 +32,19 @@ func CheckToken(next http.Handler) http.Handler {
 	})
 }
 
+func CheckMasterToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		token := r.Header.Get("mastertoken")
+
+		if token != "Avenger11." {
+			http.Error(w, `{ error : "Invalid TOKEN" }`, http.StatusUnauthorized)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
 func checkTokenBD(token string) (bool, error) {
 	sqlCheckTokenBD := "SELECT count(*) from users WHERE token=?"
 	db, err := database.Open()
