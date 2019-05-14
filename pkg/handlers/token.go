@@ -19,12 +19,12 @@ func CheckToken(next http.Handler) http.Handler {
 		token := r.Header.Get("token")
 		existTokenBD, err := checkTokenBD(token)
 		if err != nil {
-			http.Error(w, "INVALID TOKEN", http.StatusUnauthorized)
+			http.Error(w, `{ error : "Invalid TOKEN" }`, http.StatusUnauthorized)
 			return
 		}
 
 		if !checkValidGuidFn(token) || !existTokenBD {
-			http.Error(w, "INVALID TOKEN", http.StatusUnauthorized)
+			http.Error(w, `{ error : "Invalid TOKEN" }`, http.StatusUnauthorized)
 			return
 		}
 

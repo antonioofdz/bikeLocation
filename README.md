@@ -1,3 +1,11 @@
+* **Descripcion**
+Este proyecto es un ejemplo simple de comunicación cliente - servidor mediante el uso de APIS.
+Hemos supuesto una base de datos con usuarios y bicicletas, con la posibilidad de registrar la ubicación de las bicicletas, reserva y cancelación.
+
+Los métodos publicados en la API y el diagrama de la base de datos van a estar descritos un poco más abajo.
+
+USER Y PASSWORD DE PRUEBA:
+user - 12345
 ----
 **DB Diagram**
 ----
