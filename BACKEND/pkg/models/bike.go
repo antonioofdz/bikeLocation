@@ -5,27 +5,36 @@ import (
 )
 
 type UserBikeDB struct {
-	UserBook int
-	Booked bool
+	UserBook   int
+	Booked     bool
 	DateReturn mysql.NullTime
-	DateRent mysql.NullTime
+	DateRent   mysql.NullTime
 }
 
 type BikeLocationDB struct {
-	Lat int
-	Lon int
+	Lat     float64
+	Lon     float64
 	Address string
 }
 
+type BikeId struct {
+	Id int64
+}
 type BikeDB struct {
-	Id      int
-	Model    string
+	BikeId
+	Model string
 }
 
 type BikeFull struct {
 	BikeDB
 	BikeLocationDB
 	UserBikeDB
+}
+
+type BikeTest struct {
+	BikeDB
+	BikeLocationDB
+	Booked bool
 }
 
 type BookBike struct {

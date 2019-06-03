@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfiledb
+    ports:
+    - "5003:3306"
+    restart: on-failure
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+    - "5001:80"
+    restart: on-failure
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile    
+    ports:
+    - "5002:5002"

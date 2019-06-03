@@ -53,10 +53,6 @@ func getUserUserByToken(token string) (*models.UserDB, error) {
 
 func signInUser(signInUser *models.SignInUserDB) error {
 	sqlCheckIfExistsUser := `SELECT count(*) from users_credentials where user = ?`
-	if !checkValidPassword(signInUser.Password) {
-		err := errors.New("INVALID PASSWORD")
-		return err
-	}
 
 	db, err := database.Open()
 	if err != nil {
