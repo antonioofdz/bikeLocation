@@ -51,8 +51,8 @@ INSERT INTO bike (model) VALUES ("model1");
 INSERT INTO bike (model) VALUES ("model2");
 INSERT INTO bike (model) VALUES ("model3");
 
-INSERT INTO bike_location (lat, lon, address, id_bike) VALUES (1, 2, "address1", 1);
-INSERT INTO bike_location (lat, lon, address,id_bike) VALUES (1, 2, "address2", 2);
-INSERT INTO bike_location (lat, lon, address,id_bike) VALUES (1, 2, "address3", 3);
+INSERT INTO bike_location (lat, lon, address, id_bike) VALUES (36.845340, -2.320320, "address1", 1);
+INSERT INTO bike_location (lat, lon, address,id_bike) VALUES (36.845310, -2.320320, "address2", 2);
+INSERT INTO bike_location (lat, lon, address,id_bike) VALUES (36.845370, -2.320320, "address3", 3);
 
 INSERT INTO user_bike (id_bike, id_user,booked) VALUES (1, 1, 0);
